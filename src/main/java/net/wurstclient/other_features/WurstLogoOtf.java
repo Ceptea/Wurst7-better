@@ -29,7 +29,7 @@ public final class WurstLogoOtf extends OtherFeature
 		new ColorSetting("Text", "Text color.", Color.BLACK);
 	
 	private final EnumSetting<Visibility> visibility =
-		new EnumSetting<>("Visibility", Visibility.values(), Visibility.ALWAYS);
+		new EnumSetting<>("Visibility", Visibility.values(), Visibility.HIDE);
 	
 	public WurstLogoOtf()
 	{
@@ -58,8 +58,8 @@ public final class WurstLogoOtf extends OtherFeature
 	{
 		ALWAYS("Always", () -> true),
 		
-		ONLY_OUTDATED("Only when outdated",
-			() -> WURST.getUpdater().isOutdated());
+		HIDE("Hide",
+			() -> false);
 		
 		private final String name;
 		private final BooleanSupplier visible;

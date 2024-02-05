@@ -83,7 +83,8 @@ public enum WurstClient
 	private Path wurstFolder;
 	
 	private KeyBinding zoomKey;
-	
+	public static float  server_yaw = 0;
+	public static float  server_pitch = 0;
 	public void initialize()
 	{
 		System.out.println("Starting Wurst Client...");

@@ -9,6 +9,11 @@ package net.wurstclient.mixin;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
+import net.wurstclient.WurstClient;
+import net.wurstclient.settings.CheckboxSetting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -57,7 +62,30 @@ public abstract class ClientConnectionMixin
 		EventManager.fire(event);
 		return event.getPacket();
 	}
-	
+	@Inject(at = @At("HEAD"),
+			method = "handlePacket",
+			cancellable = true)
+	private static void handle(Packet<?> packet, PacketListener listener, CallbackInfo ci) {
+		if (WurstClient.INSTANCE.isEnabled()) {
+			if (packet instanceof PlayerMoveC2SPacket) {
+				PlayerMoveC2SPacket pack = (PlayerMoveC2SPacket) packet;
+
+				WurstClient.server_yaw = pack.getYaw(WurstClient.MC.player.getYaw());
+				WurstClient.server_pitch = pack.getPitch(WurstClient.MC.player.getPitch());
+			} else if (packet instanceof ExplosionS2CPacket) {
+				if (WurstClient.INSTANCE.getFeatureByName("AntiKnockBack").isEnabled()) {
+
+					ExplosionS2CPacket exp = (ExplosionS2CPacket) packet;
+					WurstClient.MC.world.addImportantParticle(exp.getParticle(),true,exp.getX(),exp.getY(),exp.getZ(),0,0,0);
+					ci.cancel();
+					return;
+
+
+				}
+			}
+		}
+
+	}
 	@Inject(at = @At("HEAD"),
 		method = "send(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;)V",
 		cancellable = true)

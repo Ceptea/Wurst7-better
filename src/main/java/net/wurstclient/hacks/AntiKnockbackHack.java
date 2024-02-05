@@ -11,6 +11,7 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.KnockbackListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
@@ -29,7 +30,7 @@ public final class AntiKnockbackHack extends Hack implements KnockbackListener
 			"How far to reduce vertical knockback.\n" + "100% = no knockback\n"
 				+ ">100% = reverse knockback",
 			1, 0.01, 2, 0.01, ValueDisplay.PERCENTAGE);
-	
+
 	public AntiKnockbackHack()
 	{
 		super("AntiKnockback");
