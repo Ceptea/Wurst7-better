@@ -55,6 +55,8 @@ public final class RotationsHack extends Hack
 	protected void onDisable()
 	{
 
+		EVENTS.remove(UpdateListener.class, this);
+		EVENTS.remove(RenderListener.class, this);
 	}
 	
 	@Override
